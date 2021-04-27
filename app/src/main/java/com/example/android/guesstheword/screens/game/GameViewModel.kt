@@ -4,13 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.NavHostFragment
-
 
 
 class GameViewModel: ViewModel() {
-    var word = MutableLiveData<String>();
-    val score = MutableLiveData<Int>();
+    private val _isCompleted = MutableLiveData<Boolean>();
+    private val _word = MutableLiveData<String>();
+    private val _score = MutableLiveData<Int>();
+    val isCompleted: LiveData<Boolean>
+        get() = _isCompleted
+    val score: LiveData<Int>
+        get() = _score
+    val word: LiveData<String>
+        get()=_word
     private lateinit var wordList: MutableList<String>
     private fun resetList() {
         wordList = mutableListOf(
@@ -39,30 +44,38 @@ class GameViewModel: ViewModel() {
         wordList.shuffle()
     }
     init{
-        word.value=""
-        score.value = 0;
+        _isCompleted.value = false;
+        _word.value=""
+        _score.value = 0;
         resetList()
         nextWord()
     }
     private fun nextWord() {
         //Select and remove a word from the list
         if (!wordList.isEmpty()) {
-
-
-            word.value = wordList.removeAt(0)
+            _word.value = wordList.removeAt(0)
+        }else{
+            onComplete()
         }
 
     }
+
+    private fun onComplete() {
+        Log.i("completed?",_isCompleted.value.toString())
+        _isCompleted.value = true
+    }
+
     fun onSkip() {
-        score.value = score.value?.plus(-1);
-        Log.i("mes","${score.value}")
+        _score.value = _score.value?.plus(-1);
+        Log.i("mes","${_score.value}")
         nextWord()
     }
     fun onCorrect() {
-        score.value = score.value?.plus(1);
-        Log.i("mes","${score.value}")
+        _score.value = _score.value?.plus(1);
+        Log.i("mes","${_score.value}")
         nextWord()
     }
+
 
 
 }
