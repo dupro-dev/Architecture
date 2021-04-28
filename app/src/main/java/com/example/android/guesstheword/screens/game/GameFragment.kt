@@ -17,6 +17,7 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
@@ -63,6 +65,8 @@ class GameFragment : Fragment() {
 
         binding.correctButton.setOnClickListener { model.onCorrect() }
         binding.skipButton.setOnClickListener { model.onSkip() }
+
+
         model.score.observe(viewLifecycleOwner, Observer<Int> {
             newScore -> binding.scoreText.text = newScore.toString()
         })
@@ -71,8 +75,16 @@ class GameFragment : Fragment() {
 
         })
         model.isCompleted.observe(viewLifecycleOwner, Observer<Boolean> {
-            isCompleted -> if(isCompleted) gameFinished()
+            isCompleted -> if(isCompleted){ gameFinished()
+            model.onGameFinish()
+        }
         })
+            model.timeLeft.observe(viewLifecycleOwner, Observer <Long>{
+            newTimer->binding.timerText.text= newTimer.toString()
+       })
+
+
+
 
 
         return binding.root
@@ -81,10 +93,12 @@ class GameFragment : Fragment() {
     }
     private fun gameFinished() {
         Log.i("completed?","Game Finished Function is called")
-
-/*        val action = GameFragmentDirections.actionGameToScore(model.score.value ?: 0)
-        NavHostFragment.findNavController(this).navigate(action)*/
+        //Toast.makeText(this.context,"Game Finished Function is called",Toast.LENGTH_LONG).show()
+        val action = GameFragmentDirections.actionGameToScore(model.score.value ?: 0)
+        NavHostFragment.findNavController(this).navigate(action)
     }
+
+
 
     /**
      * Resets the list of words and randomizes the order
@@ -112,3 +126,5 @@ class GameFragment : Fragment() {
 
 
 }
+
+
