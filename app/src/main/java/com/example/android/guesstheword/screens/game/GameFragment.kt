@@ -16,13 +16,13 @@
 
 package com.example.android.guesstheword.screens.game
 
-import android.os.Bundle
-import android.os.CountDownTimer
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -88,6 +88,18 @@ class GameFragment : Fragment() {
         //Toast.makeText(this.context,"Game Finished Function is called",Toast.LENGTH_LONG).show()
         val action = GameFragmentDirections.actionGameToScore(model.score.value ?: 0)
         NavHostFragment.findNavController(this).navigate(action)
+    }
+    private fun buzz(pattern: LongArray) {
+        val buzzer = activity?.getSystemService<Vibrator>()
+
+        buzzer?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buzzer.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            } else {
+                //deprecated in API 26
+                buzzer.vibrate(pattern, -1)
+            }
+        }
     }
 
 
