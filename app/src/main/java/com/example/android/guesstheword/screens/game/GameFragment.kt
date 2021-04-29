@@ -67,27 +67,18 @@ class GameFragment : Fragment() {
 
 
         binding.gameViewModel=model
+        binding.setLifecycleOwner(this)
 
-        model.score.observe(viewLifecycleOwner, Observer<Int> {
-            newScore -> binding.scoreText.text = newScore.toString()
-        })
-        model.word.observe(viewLifecycleOwner, Observer<String> {
-            newWord ->binding.wordText.text=newWord
 
-        })
         model.isCompleted.observe(viewLifecycleOwner, Observer<Boolean> {
             isCompleted -> if(isCompleted){ gameFinished()
             model.onGameFinish()
         }
         })
-            model.timeLeft.observe(viewLifecycleOwner, Observer <Long>{
-            newTimer->binding.timerText.text= newTimer.toString()
-       })
 
-
-
-
-
+        model.timeLeft.observe(viewLifecycleOwner, Observer<Long> {
+            newTime->binding.timerText.text=newTime.toString()
+        })
         return binding.root
 
 

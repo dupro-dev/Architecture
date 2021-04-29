@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 
-class GameViewModel: ViewModel() {
+class GameViewModel: ViewModel()  {
     companion object{
         //time in milliseconds
         const val initTimer = 10000L
