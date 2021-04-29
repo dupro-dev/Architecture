@@ -32,6 +32,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
+
 /**
  * Fragment where the game is played
  */
@@ -63,9 +64,9 @@ class GameFragment : Fragment() {
         )
 
 
-        binding.correctButton.setOnClickListener { model.onCorrect() }
-        binding.skipButton.setOnClickListener { model.onSkip() }
 
+
+        binding.gameViewModel=model
 
         model.score.observe(viewLifecycleOwner, Observer<Int> {
             newScore -> binding.scoreText.text = newScore.toString()

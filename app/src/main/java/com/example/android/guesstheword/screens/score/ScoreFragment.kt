@@ -56,6 +56,8 @@ class ScoreFragment : Fragment() {
         binding.scoreText.text =model.finalScore.toString()
         binding.playAgainButton.setOnClickListener { onPlayAgain() }
 
+        binding.scoreViewModel=model
+
         return binding.root
     }
 
